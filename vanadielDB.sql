@@ -1,0 +1,107 @@
+CREATE DATABASE [IF NOT EXISTS] vanadielDB;
+
+
+-- Create the CONTINENT table
+CREATE TABLE CONTINENT (
+  continentId VARCHAR(255) PRIMARY KEY NOT NULL,
+  name VARCHAR(255) NOT NULL
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Create the REGION table
+CREATE TABLE REGION (
+  idRegion VARCHAR(255) PRIMARY KEY NOT NULL,
+  idContinent VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  idArea VARCHAR(255) NOT NULL,
+  FOREIGN KEY (idContinent) REFERENCES CONTINENT(continentId),
+  FOREIGN KEY (idArea) REFERENCES AREA(idArea)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Create the AREA table
+CREATE TABLE AREA (
+  idArea VARCHAR(255) PRIMARY KEY NOT NULL,
+  areaName VARCHAR(255) NOT NULL,
+  mobsLevel VARCHAR(255),
+  type VARCHAR(255),
+  connections VARCHAR(255),
+  idRegion VARCHAR(255) NOT NULL,
+  IdContinent VARCHAR(255) NOT NULL,
+  FOREIGN KEY (idRegion) REFERENCES REGION(idRegion),
+  FOREIGN KEY (IdContinent) REFERENCES CONTINENT(continentId)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Create the CITY table
+CREATE TABLE CITY (
+  idCity VARCHAR(255) PRIMARY KEY NOT NULL,
+  idRegion VARCHAR(255) NOT NULL,
+  idContinent VARCHAR(255) NOT NULL,
+  idMission VARCHAR(255),
+  idQuest VARCHAR(255),
+  name VARCHAR(255) NOT NULL,
+  idNation VARCHAR(255),
+  FOREIGN KEY (idRegion) REFERENCES REGION(idRegion),
+  FOREIGN KEY (idContinent) REFERENCES CONTINENT(continentId),
+  FOREIGN KEY (idMission) REFERENCES MISSION(idMission),
+  FOREIGN KEY (idQuest) REFERENCES QUEST(idQuest),
+  FOREIGN KEY (idNation) REFERENCES NATION(idNation)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Create the QUEST table
+CREATE TABLE QUEST (
+  idQuest VARCHAR(255) PRIMARY KEY NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  questLevel INT(11) NOT NULL,
+  idCity VARCHAR(255),
+  idRegion VARCHAR(255) NOT NULL,
+  idContinent VARCHAR(255) NOT NULL,
+  description VARCHAR(255),
+  guide VARCHAR(255),
+  FOREIGN KEY (idCity) REFERENCES CITY(idCity),
+  FOREIGN KEY (idRegion) REFERENCES REGION(idRegion),
+  FOREIGN KEY (idContinent) REFERENCES CONTINENT(continentId)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Create the MISSION table
+CREATE TABLE MISSION (
+  idMission VARCHAR(255) PRIMARY KEY NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  MissionLevel INT(11) NOT NULL,
+  idCity VARCHAR(255),
+  idRegion VARCHAR(255),
+  idContinent VARCHAR(255),
+  idNation VARCHAR(255),
+  description VARCHAR(255),
+  guide VARCHAR(255),
+  FOREIGN KEY (idCity) REFERENCES CITY(idCity),
+  FOREIGN KEY (idRegion) REFERENCES REGION(idRegion),
+  FOREIGN KEY (idContinent) REFERENCES CONTINENT(continentId),
+  FOREIGN KEY (idNation) REFERENCES NATION(idNation)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Create the NATION table
+CREATE TABLE NATION (
+  idNation VARCHAR(255) PRIMARY KEY NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  description VARCHAR(255),
+  idCity VARCHAR(255) NOT NULL,
+  idRegion VARCHAR(255),
+  idContinent VARCHAR(255),
+  FOREIGN KEY (idCity) REFERENCES CITY(idCity),
+  FOREIGN KEY (idRegion) REFERENCES REGION(idRegion),
+  FOREIGN KEY (idContinent) REFERENCES CONTINENT(continentId)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Create the MONSTERS table
+CREATE TABLE MONSTERS (
+  idMonster VARCHAR(255) PRIMARY KEY NOT NULL,
+  zone VARCHAR(255),
+  type VARCHAR(255),
+  name VARCHAR(255),
+  level INT(10),
+  image VARCHAR(255),
+  hp DECIMAL,
+  mp DECIMAL,
+  family VARCHAR(255),
+  job VARCHAR(255),
+  description VARCHAR(255)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
